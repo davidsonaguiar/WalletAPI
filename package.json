@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node ./dist/server.js",
-    "dev": "tsx ./src/server.ts",
+    "dev": "tsx watch ./src/server.ts",
     "build": "tsup ./src"
   },
   "keywords": [],

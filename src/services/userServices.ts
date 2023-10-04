@@ -15,10 +15,13 @@ async function findUserByLogin(login: string) {
 
 function getUserIdByToken(auth: string) {
   const token = auth && auth.split(' ')[1];
-  const verify = jwt.verify(token, "secret");
-  return typeof verify === "object" && "id" in verify
-    ? verify.id
-    : null;
+  if(process.env.SECRET) {
+    const verify = jwt.verify(token, process.env.SECRET);
+    return typeof verify === "object" && "id" in verify
+      ? verify.id
+      : null;
+  }
+  return null;
 }
 
 const userServices = {

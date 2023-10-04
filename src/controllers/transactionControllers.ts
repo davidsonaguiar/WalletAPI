@@ -44,7 +44,6 @@ async function addTransaction(request: Request, response: Response) {
       const transaction: Transaction = await TransactionServices.saveTransaction(body);
       return response.status(201).json(transaction);
     } catch(error) {
-      console.log(error)
       return response.status(500).json(error.message);
     }
   } else {
