@@ -36,10 +36,10 @@ O objetivo deste projeto é criar uma aplicação que permita aos usuários gere
 
 ## Tecnologias Utilizadas
 
-- **Front-end:** React Vite Typescript
-- **Back-end:** JAVA SpringBoot (API)
+- **Front-end:** React Vite Typescript - React Router - CSS module
+- **Back-end:** Typescript - Node - Prisma - Express - JWT - Token
 - **Banco de Dados:** PostgreSQL
-- **Hospedagem:** Azure
+- **Hospedagem:** render.com
 
 ## Como Contribuir
 
