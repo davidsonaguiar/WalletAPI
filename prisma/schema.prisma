@@ -11,10 +11,9 @@ datasource db {
 }
 
 model User {
-
-  id String @id @default(uuid()) @map("user_id")
-  name String @map("user_name") @db.VarChar(100)
-  login String @map("user_login") @db.VarChar(30) @unique
+  id       String @id @default(uuid()) @map("user_id")
+  name     String @map("user_name") @db.VarChar(100)
+  login    String @unique @map("user_login") @db.VarChar(30)
   password String @map("user_password")
 
   accouts Account[]
@@ -23,40 +22,39 @@ model User {
 }
 
 model Account {
-
-  id String @id @default(uuid()) @map("account_id")
-  name String @map("account_name") @db.VarChar(30)
+  id      String @id @default(uuid()) @map("account_id")
+  name    String @map("account_name") @db.VarChar(30)
   user_id String @map("account_user_id")
 
-  user User @relation(fields: [user_id], references: [id])
+  user         User          @relation(fields: [user_id], references: [id])
   transactions Transaction[]
 
-  @@map("tbl_accounts")
   @@unique([name, user_id])
+  @@map("tbl_accounts")
 }
 
 model Transaction {
+  id          String   @id @default(uuid()) @map("transaction_id")
+  value       Float    @map("transaction_value")
+  description String   @map("transaction_description") @db.VarChar(100)
+  date        DateTime @map("transaction_date") @db.Date()
+  id_category Int      @map("transaction_id_category")
+  id_account  String   @map("transaction_id_account")
 
-  id String @id @default(uuid()) @map("transaction_id")
-  value Float @map("transaction_value")
-  description String @map("transaction_description") @db.VarChar(100)
-  date DateTime @map("transaction_date")
-  id_category Int @map("transaction_id_category") 
-  id_account String @map("transaction_id_account")
-
-  account Account @relation(fields: [id_account], references: [id])
+  account  Account  @relation(fields: [id_account], references: [id])
   category Category @relation(fields: [id_category], references: [id])
 
   @@map("tbl_transactions")
 }
 
 model Category {
-  id Int @id @default(autoincrement()) @map("category_id")
+  id   Int    @id @default(autoincrement()) @map("category_id")
   name String @map("category_name")
-  type Type @map("category_type")
+  type Type   @map("category_type")
 
   transactions Transaction[]
 
+  @@unique([name, type])
   @@map("tbl_categories")
 }
 
