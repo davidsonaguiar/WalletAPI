@@ -1,6 +1,7 @@
-import { Transaction, PrismaClient } from "@prisma/client";
+import { Transaction } from "@prisma/client";
+import prisma from "../prisma";
 
-const transactionRepository = new PrismaClient().transaction;
+const transactionRepository = prisma.transaction;
 
 async function findTransactionById(id: string) {
   return await transactionRepository.findUniqueOrThrow({
@@ -36,11 +37,11 @@ async function saveTransaction(data: Transaction) {
 }
 
 
-const transactionServices = {
+const transactionService = {
   findTransactionById,
   findTransactionByUserId,
   findTransactionByAccountId,
   saveTransaction,
 }
 
-export default transactionServices;
+export default transactionService;

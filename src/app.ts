@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
-import userRouter from "./routers/userRouters";
-import accountRounter from "./routers/accountRouters";
-import transactionRouters from "./routers/transactionRouters";
+import userRouter from "./routers/userRouter";
+import accountRounter from "./routers/accountRouter";
+import transactionRouters from "./routers/transactionRouter";
+import categoryRouter from "./routers/categoryRouter";
 
 
 const app = express();
@@ -17,5 +18,6 @@ app.use(cors({
 app.use("/", userRouter);
 app.use("/", accountRounter);
 app.use("/", transactionRouters);
+app.use("/", categoryRouter);
 
 export default app;

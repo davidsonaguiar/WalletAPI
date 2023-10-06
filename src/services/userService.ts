@@ -1,7 +1,8 @@
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import jwt from "jsonwebtoken";
+import prisma from "../prisma";
 
-const userRepository = new PrismaClient().user;
+const userRepository = prisma.user;
 
 async function saveUser(data: User) {
     return await userRepository.create({ data })
@@ -24,11 +25,11 @@ function getUserIdByToken(auth: string) {
   return null;
 }
 
-const userServices = {
+const userService = {
     saveUser,
     findUserByLogin,
     getUserIdByToken
 }
 
 
-export default userServices;
+export default userService;

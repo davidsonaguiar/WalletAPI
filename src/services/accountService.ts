@@ -1,6 +1,7 @@
-import { Account, PrismaClient } from "@prisma/client";
+import { Account } from "@prisma/client";
+import prisma from "../prisma";
 
-const accountRepository = new PrismaClient().account;
+const accountRepository = prisma.account;
 
 async function findAccountById(id: string) {
   return await accountRepository.findUniqueOrThrow({
@@ -37,7 +38,7 @@ async function deleteAccount(id: string) {
   })
 }
 
-const accountServices = {
+const accountService = {
   findAccountByName,
   findAccountsByUserId,
   findAccountById,
@@ -46,4 +47,4 @@ const accountServices = {
   deleteAccount
 };
 
-export default accountServices;
+export default accountService;
