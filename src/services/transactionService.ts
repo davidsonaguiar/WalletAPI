@@ -33,15 +33,36 @@ async function findTransactionByAccountId(id_account: string) {
 }
 
 async function saveTransaction(data: Transaction) {
+  console.log(data);
   return await transactionRepository.create({ data });
 }
 
+async function updateTransaction(data: Transaction, userId: string) {
+  return await transactionRepository.update({
+    where: { 
+      id: data.id, 
+      account: { user_id: userId} 
+    },
+    data: data
+  });
+}
+
+async function deleteTransaction(id: string, userId: string) {
+  return await transactionRepository.delete({
+    where: {
+      id: id,
+      account: { user_id: userId}
+    }
+  })
+}
 
 const transactionService = {
   findTransactionById,
   findTransactionByUserId,
   findTransactionByAccountId,
   saveTransaction,
+  updateTransaction,
+  deleteTransaction
 }
 
 export default transactionService;
