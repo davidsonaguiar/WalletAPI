@@ -43,9 +43,19 @@ async function login(request: Request, response: Response) {
   }
 }
 
+async function validateToken(request: Request, response: Response) {
+  const token = request.headers.authorization;
+  const auth = token && userService.getUserIdByToken(token);
+ 
+  return auth
+    ? response.status(200).json(auth)
+    : response.status(401).json("Token Inválido.");
+}
+
 const userController = {
   register,
   login,
+  validateToken
 };
 
 export default userController;
