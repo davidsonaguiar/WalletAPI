@@ -56,13 +56,22 @@ async function deleteTransaction(id: string, userId: string) {
   })
 }
 
+async function deleteTransactionsByAccountId(id: string) {
+  return await transactionRepository.deleteMany({
+    where: {
+      id_account: id
+    }
+  });
+}
+
 const transactionService = {
   findTransactionById,
   findTransactionByUserId,
   findTransactionByAccountId,
   saveTransaction,
   updateTransaction,
-  deleteTransaction
+  deleteTransaction,
+  deleteTransactionsByAccountId
 }
 
 export default transactionService;

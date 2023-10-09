@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import accountService from "../services/accountService";
 import userService from "../services/userService";
 import { Account } from "@prisma/client";
+import transactionService from "../services/transactionService";
 
 
 async function getAccount(request: Request, response: Response) {
@@ -80,7 +81,9 @@ async function removeAccount(request: Request, response: Response) {
     const id = request.params.id;
     try {
       await accountService.findAccountById(id);
+      await transactionService.deleteTransactionsByAccountId(id);
       await accountService.deleteAccount(id);
+      console.log("teste")
       return response.status(200).json("Conta deletada com sucesso.");
     } catch(error) {
       return response.status(404).json("Conta não encontrada.");

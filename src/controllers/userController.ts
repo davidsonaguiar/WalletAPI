@@ -6,7 +6,6 @@ import { User } from "@prisma/client";
 
 async function register(request: Request, response: Response) {
   const newUser: User = await request.body;
-
   try {
     await userService.findUserByLogin(newUser.login);
     return response.status(400).send("Login já cadastrado");
