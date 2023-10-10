@@ -42,8 +42,6 @@ O objetivo deste projeto é criar uma aplicação que permita aos usuários gere
 
 - **Front-end:** [React Vite](https://vitejs.dev/) / [Typescript](https://www.typescriptlang.org/) / [React Router](https://reactrouter.com/) / CSS module
 - **Back-end:** [Typescript](https://www.typescriptlang.org/) / [Node](https://nodejs.org/) / [Prisma](https://www.prisma.io/) / [Express](https://expressjs.com/) / [JWT](https://jwt.io/) 
-
-![]()
 - **Banco de Dados:** [PostgresSQL](https://www.postgresql.org/)
 - **Hospedagem:** [Render](render.com)
 - **Protótipo:** [Figma](https://www.figma.com/file/VlNiDluNn9HZemv5C7bvnz/Untitled?type=design&node-id=0%3A1&mode=design&t=UexyEkg50FN2SS4H-1)
