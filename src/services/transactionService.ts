@@ -33,7 +33,6 @@ async function findTransactionByAccountId(id_account: string) {
 }
 
 async function saveTransaction(data: Transaction) {
-  console.log(data);
   return await transactionRepository.create({ data });
 }
 

@@ -83,7 +83,6 @@ async function removeAccount(request: Request, response: Response) {
       await accountService.findAccountById(id);
       await transactionService.deleteTransactionsByAccountId(id);
       await accountService.deleteAccount(id);
-      console.log("teste")
       return response.status(200).json("Conta deletada com sucesso.");
     } catch(error) {
       return response.status(404).json("Conta não encontrada.");

@@ -33,7 +33,6 @@ async function updateAccount(data: Account) {
 }
 
 async function deleteAccount(id: string) {
-  console.log("deleting account", id)
   return await accountRepository.delete({ 
     where: { id, transactions: {
       every: {

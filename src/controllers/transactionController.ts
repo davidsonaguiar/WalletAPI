@@ -42,7 +42,6 @@ async function addTransaction(request: Request, response: Response) {
   if(userId) {
     try {
       const body: Transaction = await request.body;
-      console.log(body);
       await TransactionService.saveTransaction(body);
       return response.status(201).json("Transação criada com sucess.");
     } catch(error) {
