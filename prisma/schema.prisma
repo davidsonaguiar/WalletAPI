@@ -16,7 +16,8 @@ model User {
   login    String @unique @map("user_login") @db.VarChar(30)
   password String @map("user_password")
 
-  accouts Account[]
+  accouts    Account[]
+  categories Category[]
 
   @@map("tbl_users")
 }
@@ -48,13 +49,15 @@ model Transaction {
 }
 
 model Category {
-  id   Int    @id @default(autoincrement()) @map("category_id")
-  name String @map("category_name")
-  type Type   @map("category_type")
+  id      Int     @id @default(autoincrement()) @map("category_id")
+  name    String  @map("category_name")
+  type    Type    @map("category_type")
+  user_id String? @map("category_user_id")
 
+  user         User?         @relation(fields: [user_id], references: [id])
   transactions Transaction[]
 
-  @@unique([name, type])
+  @@unique([name, type, user_id])
   @@map("tbl_categories")
 }
 
