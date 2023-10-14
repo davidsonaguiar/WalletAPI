@@ -13,8 +13,11 @@ async function register(request: Request, response: Response) {
     try {
       const salt = await bcrypt.genSalt(12);
       newUser.password = await bcrypt.hash(newUser.password, salt);
-      await userService.saveUser(newUser);
-      return response.status(201).json("Registrado com sucesso.");
+      const user = await userService.saveUser(newUser);
+      if(process.env.SECRET) {
+        const token = jwt.sign({ id: user.id }, process.env.SECRET);
+        return response.status(201).json(token);
+      } 
     } catch (error) {
       return response.status(400).send("Dados inválidos.");
     }

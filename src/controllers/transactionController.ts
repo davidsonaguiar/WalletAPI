@@ -57,7 +57,7 @@ async function editTransaction(request: Request, response: Response) {
   const userId = auth && userService.getUserIdByToken(auth);
   
   if(userId) {
-    const body: Transaction = await request.body;
+    const body: Transaction = await request.body; 
     const id = request.params.id;
     try {
       await transactionService.findTransactionById(id);
