@@ -18,6 +18,7 @@ model User {
 
   accouts    Account[]
   categories Category[]
+  metas Meta[]
 
   @@map("tbl_users")
 }
@@ -55,10 +56,26 @@ model Category {
   user_id String? @map("category_user_id")
 
   user         User?         @relation(fields: [user_id], references: [id])
+
   transactions Transaction[]
+  meta Meta[]
 
   @@unique([name, type, user_id])
   @@map("tbl_categories")
+}
+
+model Meta {
+  id String @id @default(uuid()) @map("meta_id")
+  value Float @map("meta_value")
+  month Int @map("meta_month")
+  year Int @map("meta_year")
+  user_id String @map("meta_user_id")
+  category_id Int @map("meta_category_id")
+
+  user User @relation(fields: [user_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
+
+  @@unique([month, year, user_id, category_id])
 }
 
 enum Type {

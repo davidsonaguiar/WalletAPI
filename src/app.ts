@@ -4,6 +4,7 @@ import userRouter from "./routers/userRouter";
 import accountRounter from "./routers/accountRouter";
 import transactionRouters from "./routers/transactionRouter";
 import categoryRouter from "./routers/categoryRouter";
+import metaRouter from "./routers/metaRouter";
 
 
 const app = express();
@@ -19,5 +20,6 @@ app.use("/", userRouter);
 app.use("/", accountRounter);
 app.use("/", transactionRouters);
 app.use("/", categoryRouter);
+app.use("/", metaRouter);
 
 export default app;
