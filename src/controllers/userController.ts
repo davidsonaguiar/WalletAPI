@@ -38,10 +38,10 @@ async function login(request: Request, response: Response) {
         return response.status(500).json("Error ao gerar token.");
       }
     } else {
-      return response.status(400).send("Senha incorreta.");
+      return response.status(400).json("Senha incorreta.");
     }
   } catch (error) {
-    return response.status(404).send("Login não localizado.");
+    return response.status(404).json("Login não localizado.");
   }
 }
 

@@ -27,9 +27,11 @@ async function addMeta(request: Request, response: Response) {
     const body: Meta = await request.body;
 
     try {
+      body.user_id = userId;
       await metaService.saveMeta(body);
       return response.status(201).json("Adicionado com sucesso.");
     } catch(error) {
+      console.log(error);
       return response.status(500).json("Error ao adicionar meta.");
     }
   } else {
@@ -44,9 +46,11 @@ async function editMeta(request: Request, response: Response) {
   if(userId) {
     const body: Meta = await request.body;
     try {
+      body.user_id = userId;
       await metaService.updateMeta(body);
       return response.status(200).json("Atualizada com sucesso.");
     } catch(error) {
+      console.log(error)
       return response.status(500).json("Error ao atualizar a meta.");
     }
   } else {
