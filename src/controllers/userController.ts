@@ -31,12 +31,8 @@ async function login(request: Request, response: Response) {
     const user = await userService.findUserByLogin(login);
     const compare = await bcrypt.compare(password, user.password);
     if (compare) {
-      if(process.env.SECRET) {
-        const token = jwt.sign({ id: user.id }, process.env.SECRET);
+        const token = jwt.sign({ id: user.id }, process.env.SECRET!);
         return response.status(200).json(token);
-      } else {
-        return response.status(500).json("Error ao gerar token.");
-      }
     } else {
       return response.status(400).json("Senha incorreta.");
     }
