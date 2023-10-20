@@ -7,8 +7,8 @@ import transactionService from "../services/transactionService";
 
 async function getAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
-  if(userId) {
+  const user = auth && userService.getUserIdByToken(auth);
+  if(user) {
     try {
       const id = request.params.id;
       const account = await accountService.findAccountById(id);
@@ -23,10 +23,10 @@ async function getAccount(request: Request, response: Response) {
 
 async function getAccounts(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
-  if(userId) {
+  const user = auth && userService.getUserIdByToken(auth);
+  if(user) {
     try {
-      const accounts: Account[] = await accountService.findAccountsByUserId(userId);
+      const accounts: Account[] = await accountService.findAccountsByUserId(user.id);
       return response.status(200).json(accounts);
     } catch(error) {
       return response.status(500).json("Error ao buscar contas!");
@@ -38,14 +38,14 @@ async function getAccounts(request: Request, response: Response) {
 
 async function addAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
-  if(userId) {
+  const user = auth && userService.getUserIdByToken(auth);
+  if(user) {
     const body: Account = await request.body
     try {
-      await accountService.findAccountByName(body.name, userId);
+      await accountService.findAccountByName(body.name, user.id);
       return response.status(404).json("Conta já existe");
     } catch(error) {
-      body.user_id = userId;
+      body.user_id = user.id;
       await accountService.saveAccount(body);
       return response.status(201).json("Conta criada com sucesso.")
     } 
@@ -56,15 +56,15 @@ async function addAccount(request: Request, response: Response) {
 
 async function editAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
-  if(userId) {
+  const user = auth && userService.getUserIdByToken(auth);
+  if(user) {
     const body: Account = await request.body;
     try {
-      await accountService.findAccountByName(body.name, userId);
+      await accountService.findAccountByName(body.name, user.id);
       return response.status(404).json("Conta ja cadatrada com o nome: " + body.name);
     } catch(error) {
       const id = request.params.id;
-      body.user_id = userId;
+      body.user_id = user.id;
       body.id = id;
       await accountService.updateAccount(body);
       return response.status(200).json("Conta atualizada com sucesso.")

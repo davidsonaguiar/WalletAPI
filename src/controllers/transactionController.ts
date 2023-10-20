@@ -7,10 +7,10 @@ import transactionService from "../services/transactionService";
 
 async function getTransactionsByUserId(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
-  if(userId) {
+  const user = auth && userService.getUserIdByToken(auth);
+  if(user) {
     try {
-      const transactions = await TransactionService.findTransactionByUserId(userId);
+      const transactions = await TransactionService.findTransactionByUserId(user.id);
       return response.status(200).json(transactions);
     } catch(error) {
       return response.status(500).json("Error ao buscar contas!");
@@ -54,9 +54,9 @@ async function addTransaction(request: Request, response: Response) {
 
 async function editTransaction(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const user = auth && userService.getUserIdByToken(auth);
   
-  if(userId) {
+  if(user) {
     const body: Transaction = await request.body; 
     const id = request.params.id;
     try {
@@ -67,7 +67,7 @@ async function editTransaction(request: Request, response: Response) {
 
     try {
       body.id = id;
-      await transactionService.updateTransaction(body, userId);
+      await transactionService.updateTransaction(body, user.id);
       return response.status(200).json("Transação atualizada com sucesso.");
     } catch(error) {
       return response.status(404).json("Erro ao atualizar a transação.");
@@ -80,9 +80,9 @@ async function editTransaction(request: Request, response: Response) {
 
 async function removeTransaction(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const user = auth && userService.getUserIdByToken(auth);
 
-  if(userId) {
+  if(user) {
     const id = request.params.id;
     try {
       await transactionService.findTransactionById(id);
@@ -91,7 +91,7 @@ async function removeTransaction(request: Request, response: Response) {
     }
 
     try {
-      await transactionService.deleteTransaction(id, userId);
+      await transactionService.deleteTransaction(id, user.id);
       return response.status(200).json("Transação deletada com sucesso.");
     } catch(error) {
       return response.status(500).json("Erro ao deletar transação");
