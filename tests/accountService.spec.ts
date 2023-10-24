@@ -1,10 +1,10 @@
 import { Account } from "@prisma/client";
 import { describe, expect, it } from "vitest";
-import saveAccount from "../../src/services/accountService/saveAccount";
-import findAccountsByUserId from "../../src/services/accountService/findAccountByUserId";
-import deleteAccount from "../../src/services/accountService/deleteAccount";
-import userService from "../../src/services/userService";
-import prisma from "../../src/prisma";
+import saveAccount from "../src/services/accountService/saveAccount";
+import findAccountsByUserId from "../src/services/accountService/findAccountByUserId";
+import deleteAccount from "../src/services/accountService/deleteAccount";
+import userService from "../src/services/userService";
+import prisma from "../src/prisma";
 
 describe("Account Service Tests", () => {
   describe("Save Account Tests", () => {
