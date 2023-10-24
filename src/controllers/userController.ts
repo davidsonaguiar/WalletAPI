@@ -1,45 +1,28 @@
 import userService from "../services/userService";
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { getUserIdByToken, tokenGenerator } from "../utils";
+import { Request, Response } from "express";
 import { User } from "@prisma/client";
 
-function tokenGenerator(user: { name: string; login: string }) {
-  try {
-    const token = jwt.sign(user, process.env.SECRET!);
-    return token;
-  } catch (errot) {
-    throw new Error("Error ao gerar Token");
-  }
-}
 
 async function register(request: Request, response: Response) {
   const newUser: User = await request.body;
+  const userAlreadyExist = await userService.findUserByLogin(newUser.login);
+  if(userAlreadyExist) return response.status(400).json("Login já cadastrado")
 
   try {
-
-    await userService.findUserByLogin(newUser.login);
-    return response.status(400).json("Login já cadastrado");
-
+    const user = await userService.saveUser(newUser);
+    response.status(201).json({
+      message: "sucess",
+      token: tokenGenerator(user),
+      user: user,
+    });
   } catch (error) {
-
-    try {
-
-      const user = await userService.saveUser(newUser);
-      response.status(201).json({
-        message: "sucess",
-        token: tokenGenerator(user),
-        user: user,
-      });
-
-    } catch (error) {
-
-      if (error instanceof Error) {
-        return response.status(400).json(error.message);
-      }
-      return response.status(500).json("Erro no servidor.");
-
+    if (error instanceof Error) {
+      return response.status(400).json(error.message);
     }
+    return response.status(500).json("Erro no servidor.");
   }
 }
 
@@ -69,7 +52,7 @@ async function login(request: Request, response: Response) {
 
 async function validateToken(request: Request, response: Response) {
   const token = request.headers.authorization;
-  const auth = token && userService.getUserIdByToken(token);
+  const auth = token && getUserIdByToken(token);
 
   return auth
     ? response.status(200).json(auth)

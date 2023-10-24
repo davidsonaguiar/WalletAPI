@@ -2,14 +2,15 @@ import { Request, Response } from "express";
 import userService from "../services/userService";
 import metaService from "../services/metaService";
 import { Meta } from "@prisma/client";
+import { getUserIdByToken } from "../utils";
 
 async function getMetasByUseId(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
 
   if(userId) {
     try {
-      const metas = await metaService.findMetasByUserId(userId);
+      const metas = await metaService.findMetasByUserId(userId.id);
       return response.status(200).json(metas);
     } catch(error) {
       return response.status(404).json("Error ao buscar suas metas");
@@ -21,13 +22,13 @@ async function getMetasByUseId(request: Request, response: Response) {
 
 async function addMeta(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
 
   if(userId) {
     const body: Meta = await request.body;
 
     try {
-      body.user_id = userId;
+      body.user_id = userId.id;
       await metaService.saveMeta(body);
       return response.status(201).json("Adicionado com sucesso.");
     } catch(error) {
@@ -41,12 +42,12 @@ async function addMeta(request: Request, response: Response) {
 
 async function editMeta(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
 
   if(userId) {
     const body: Meta = await request.body;
     try {
-      body.user_id = userId;
+      body.user_id = userId.id;
       await metaService.updateMeta(body);
       return response.status(200).json("Atualizada com sucesso.");
     } catch(error) {
@@ -60,7 +61,7 @@ async function editMeta(request: Request, response: Response) {
 
 async function removeMeta(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
 
   if(userId) {
     const id: string = request.params.id;

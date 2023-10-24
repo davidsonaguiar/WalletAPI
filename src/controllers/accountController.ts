@@ -1,13 +1,14 @@
-import { Request, Response } from "express";
 import accountService from "../services/accountService";
 import userService from "../services/userService";
-import { Account } from "@prisma/client";
 import transactionService from "../services/transactionService";
+import { Account } from "@prisma/client";
+import { Request, Response } from "express";
+import { getUserIdByToken } from "../utils";
 
 
 async function getAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   if(user) {
     try {
       const id = request.params.id;
@@ -23,7 +24,7 @@ async function getAccount(request: Request, response: Response) {
 
 async function getAccounts(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   if(user) {
     try {
       const accounts: Account[] = await accountService.findAccountsByUserId(user.id);
@@ -38,7 +39,7 @@ async function getAccounts(request: Request, response: Response) {
 
 async function addAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   if(user) {
     const body: Account = await request.body
     try {
@@ -56,7 +57,7 @@ async function addAccount(request: Request, response: Response) {
 
 async function editAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   if(user) {
     const body: Account = await request.body;
     try {
@@ -76,7 +77,7 @@ async function editAccount(request: Request, response: Response) {
 
 async function removeAccount(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
   if(userId) {
     const id = request.params.id;
     try {

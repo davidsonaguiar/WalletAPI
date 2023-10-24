@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Transaction } from "@prisma/client";
+import { getUserIdByToken } from "../utils";
 import userService from "../services/userService";
 import TransactionService from "../services/transactionService";
 import transactionService from "../services/transactionService";
@@ -7,7 +8,7 @@ import transactionService from "../services/transactionService";
 
 async function getTransactionsByUserId(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   if(user) {
     try {
       const transactions = await TransactionService.findTransactionByUserId(user.id);
@@ -22,7 +23,7 @@ async function getTransactionsByUserId(request: Request, response: Response) {
 
 async function getTransactionById(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
   if(userId) {
     try {
       const TransactionId = request.params.id
@@ -38,7 +39,7 @@ async function getTransactionById(request: Request, response: Response) {
 
 async function addTransaction(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const userId = auth && userService.getUserIdByToken(auth);
+  const userId = auth && getUserIdByToken(auth);
   if(userId) {
     try {
       const body: Transaction = await request.body;
@@ -54,7 +55,7 @@ async function addTransaction(request: Request, response: Response) {
 
 async function editTransaction(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
   
   if(user) {
     const body: Transaction = await request.body; 
@@ -80,7 +81,7 @@ async function editTransaction(request: Request, response: Response) {
 
 async function removeTransaction(request: Request, response: Response) {
   const auth = request.headers.authorization;
-  const user = auth && userService.getUserIdByToken(auth);
+  const user = auth && getUserIdByToken(auth);
 
   if(user) {
     const id = request.params.id;
