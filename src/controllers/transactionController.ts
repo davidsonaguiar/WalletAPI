@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { Transaction } from "@prisma/client";
 import { getUserIdByToken } from "../utils";
-import userService from "../services/userService";
-import TransactionService from "../services/transactionService";
 import transactionService from "../services/transactionService";
 
 
@@ -11,7 +9,7 @@ async function getTransactionsByUserId(request: Request, response: Response) {
   const user = auth && getUserIdByToken(auth);
   if(user) {
     try {
-      const transactions = await TransactionService.findTransactionByUserId(user.id);
+      const transactions = await transactionService.findTransactionByUserId(user.id);
       return response.status(200).json(transactions);
     } catch(error) {
       return response.status(500).json("Error ao buscar contas!");
@@ -27,7 +25,7 @@ async function getTransactionById(request: Request, response: Response) {
   if(userId) {
     try {
       const TransactionId = request.params.id
-      const transaction: Transaction = await TransactionService.findTransactionById(TransactionId);
+      const transaction: Transaction = await transactionService.findTransactionById(TransactionId);
       return response.status(200).json(transaction);
     } catch(error) {
       return response.status(404).json("Transaction não encontrada");
@@ -43,7 +41,7 @@ async function addTransaction(request: Request, response: Response) {
   if(userId) {
     try {
       const body: Transaction = await request.body;
-      await TransactionService.saveTransaction(body);
+      await transactionService.saveTransaction(body);
       return response.status(201).json("Transação criada com sucess.");
     } catch(error) {
       return response.status(500).json("Erro ao criar a transação.");

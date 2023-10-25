@@ -1,7 +1,6 @@
 import { Category } from '@prisma/client';
 import { Request, Response } from "express";
 import categoryService from "../services/categoryService";
-import userService from "../services/userService";
 import { getUserIdByToken } from '../utils';
 
 async function getCategories(request: Request, response: Response) {

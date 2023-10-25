@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import userService from "../services/userService";
 import metaService from "../services/metaService";
 import { Meta } from "@prisma/client";
 import { getUserIdByToken } from "../utils";

@@ -1,4 +1,4 @@
-import userService from "../services/userService";
+import userService from "../services/userService/";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { getUserIdByToken, tokenGenerator } from "../utils";
