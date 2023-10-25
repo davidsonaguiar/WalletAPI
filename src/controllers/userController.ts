@@ -29,6 +29,8 @@ async function register(request: Request, response: Response) {
 async function login(request: Request, response: Response) {
   const { login, password } = await request.body;
 
+  if(password === "") return response.status(400).json("Password não pode ser vazio.")
+
   try {
     const user = await userService.findUserByLogin(login);
     if(user) {
