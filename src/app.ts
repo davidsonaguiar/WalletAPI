@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import userRouter from "./routers/userRouter";
+import userRouter from "./user/user.router";
 import accountRounter from "./routers/accountRouter";
 import transactionRouters from "./routers/transactionRouter";
 import categoryRouter from "./routers/categoryRouter";
@@ -17,9 +17,9 @@ app.use(cors({
 }));
 
 app.use("/", userRouter);
-app.use("/", accountRounter);
-app.use("/", transactionRouters);
-app.use("/", categoryRouter);
-app.use("/", metaRouter);
+// app.use("/", accountRounter);
+// app.use("/", transactionRouters);
+// app.use("/", categoryRouter);
+// app.use("/", metaRouter);
 
 export default app;

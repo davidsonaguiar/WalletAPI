@@ -1,4 +1,5 @@
 import jwt  from 'jsonwebtoken';
+import { UserOutput } from '../user/user.models';
 
 export function getUserIdByToken(auth: string) {
   const token = auth && auth.split(" ")[1];
@@ -13,7 +14,7 @@ export function getUserIdByToken(auth: string) {
   return null;
 }
 
-export function tokenGenerator(user: { name: string; login: string }) {
+export function tokenGenerator(user: UserOutput) {
   try {
     const token = jwt.sign(user, process.env.SECRET!);
     return token;

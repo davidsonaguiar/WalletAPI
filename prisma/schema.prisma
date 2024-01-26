@@ -11,9 +11,8 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid()) @map("user_id")
   name     String @map("user_name") @db.VarChar(100)
-  login    String @unique @map("user_login") @db.VarChar(30)
+  email    String @unique @map("user_login") @db.VarChar(30)
   password String @map("user_password")
 
   accouts    Account[]
@@ -26,12 +25,12 @@ model User {
 model Account {
   id      String @id @default(uuid()) @map("account_id")
   name    String @map("account_name") @db.VarChar(30)
-  user_id String @map("account_user_id")
+  user_email String @map("account_user_id")
 
-  user         User          @relation(fields: [user_id], references: [id])
+  user         User          @relation(fields: [user_email], references: [email])
   transactions Transaction[]
 
-  @@unique([name, user_id])
+  @@unique([name, user_email])
   @@map("tbl_accounts")
 }
 
@@ -53,14 +52,14 @@ model Category {
   id      Int     @id @default(autoincrement()) @map("category_id")
   name    String  @map("category_name")
   type    Type    @map("category_type")
-  user_id String? @map("category_user_id")
+  user_email String ? @map("category_user_id")
 
-  user         User?         @relation(fields: [user_id], references: [id])
+  user         User?         @relation(fields: [user_email], references: [email])
 
   transactions Transaction[]
   meta Meta[]
 
-  @@unique([name, type, user_id])
+  @@unique([name, type, user_email])
   @@map("tbl_categories")
 }
 
@@ -69,13 +68,13 @@ model Meta {
   value Float @map("meta_value")
   month Int @map("meta_month")
   year Int @map("meta_year")
-  user_id String @map("meta_user_id")
+  user_email String @map("meta_user_email")
   category_id Int @map("meta_category_id")
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_email], references: [email])
   category Category @relation(fields: [category_id], references: [id])
 
-  @@unique([month, year, user_id, category_id])
+  @@unique([month, year, user_email, category_id])
 }
 
 enum Type {
