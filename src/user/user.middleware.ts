@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { UserEntity } from "./user.models";
 
 export class UserMiddleware {
   validateCreateInput(
