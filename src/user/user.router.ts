@@ -1,13 +1,12 @@
 import { Router } from "express";
 
-import { UserRepositoryInMemory } from "./user.repository.in.memory";
+import userRepository from "./user.repository.in.memory";
 import { UserServices } from "./user.services";
 import { UserControllers } from "./user.controllers";
 import { UserMiddleware } from "./user.middleware";
 
 const userRouter: Router = Router();
-const repository = new UserRepositoryInMemory();
-const userServices = new UserServices(repository);
+const userServices = new UserServices(userRepository);
 const userControllers = new UserControllers(userServices);
 const userMiddleware = new UserMiddleware();
 

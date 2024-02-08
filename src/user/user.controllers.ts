@@ -10,8 +10,11 @@ export class UserControllers {
   async handleCreateUser(request: Request, response: Response) {
     try {
       const { name, email, password } = request.body;
-      await this.services.CreateUser({ name, email, password });
-      response.status(201).json({ message: "Usuário criado com sucesso." });
+      await this.services.CreateUser({ name, email, password, accounts: [] });
+      response.status(201).json({ 
+        message: "Usuário criado com sucesso." ,
+        user: { name, email }
+      });
     } catch (error) {
       if (error instanceof Error) {
         return response.status(400).json(error.message);
@@ -19,7 +22,7 @@ export class UserControllers {
       return response.status(500).json("Error Servidor");
     }
   }
-
+  
   async handleAuthentication(request: Request, response: Response) {
     try {
       const { email, password } = request.body;
@@ -42,20 +45,3 @@ export class UserControllers {
     }
   }
 }
-
-// async function validateToken(request: Request, response: Response) {
-//   const token = request.headers.authorization;
-//   const auth = token && getUserIdByToken(token);
-
-//   return auth
-//     ? response.status(200).json(auth)
-//     : response.status(401).json("Token Inválido.");
-// }
-
-// const userController = {
-//   register,
-//   login,
-//   validateToken,
-// };
-
-// export default userController;

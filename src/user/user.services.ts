@@ -3,7 +3,7 @@ import { sign } from "jsonwebtoken";
 import { hash, genSalt, compare } from "bcrypt";
 import { config } from "dotenv";
 
-import { AuthenticationInput, UserEntity } from "./user.models";
+import { AuthenticationRequest, UserEntity } from "./user.models";
 import { UserRepositoryProtocol } from "./user.repository.protocol";
 
 config();
@@ -13,7 +13,7 @@ export class UserServices {
 
   async CreateUser(input: UserEntity) {
     try {
-      const emailExists = await this.repository.getByEmail(input.email);
+      const emailExists = await this.repository.emailExists(input.email);
       if (emailExists) throw AuthenticationError.emailExists();
       const salt = await genSalt(12);
       input.password = await hash(input.password, salt);
@@ -24,7 +24,7 @@ export class UserServices {
     }
   }
 
-  async AuthenticationUser(input: AuthenticationInput) {
+  async AuthenticationUser(input: AuthenticationRequest) {
     const user = await this.repository.getByEmail(input.email);
     if (!user) throw AuthenticationError.userNotFound();
     const isEqual = await compare(input.password, user.password);
@@ -33,7 +33,8 @@ export class UserServices {
     return { 
       user: { 
         name: user.name, 
-        email: user.email 
+        email: user.email,
+        accounts: user.accounts,
       },
       token, 
     };

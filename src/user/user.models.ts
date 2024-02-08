@@ -1,11 +1,24 @@
+import { AccountEntity, AccountWithoutUserEmail } from "../account/account.models";
+
 export interface UserEntity {
   name: string;
   email: string;
   password: string;
+  accounts: AccountWithoutUserEmail[];
 }
-export type UserOutput = Omit<UserEntity, "password">;
-export type AuthenticationInput = Omit<UserEntity, "name">;
-export interface AuthenticationOutput {
+
+export interface UserResponse {
+  name: string;
+  email: string;
+  accounts: AccountWithoutUserEmail[];
+}
+
+export interface AuthenticationRequest {
+  email: string;
+  password: string;
+};
+
+export interface AuthenticationResponse {
   token: string;
-  user: UserOutput;
+  user: UserResponse;
 }
