@@ -5,7 +5,7 @@ class AccountRepositoryInMemory implements AccountRepositoryProtocol {
   private accounts: AccountEntity[] = [];
 
   async findByUserEmail(email: string) {
-    const accounts = this.accounts.filter((account) => account.userEmail === email);
+    const accounts = this.accounts.filter((account) => account.email === email);
     return accounts;
   }
   async save(account: AccountEntity) {

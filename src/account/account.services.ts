@@ -11,7 +11,7 @@ export class AccountServices {
   ){}
 
   async CreateAccount(input: CreateAccountRequest): Promise<AccountEntity> {
-    const accounts = await this.accountRepository.findByUserEmail(input.userEmail);
+    const accounts = await this.accountRepository.findByUserEmail(input.email);
     const accountAlreadyExists = accounts.find(account => account.name === input.name);
     if(accountAlreadyExists) throw new Error("Account already exists");
     const id = randomInt(1, 1000);
@@ -19,7 +19,8 @@ export class AccountServices {
     return {
       id,
       name: input.name,
-      userEmail: input.userEmail,
+      email: input.email,
+      amount: input.amount,
       transactions: []
     }
   }

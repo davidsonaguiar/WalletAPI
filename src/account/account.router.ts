@@ -10,11 +10,11 @@ const accountRouter = Router();
 const accountServices = new AccountServices(userRepository, accountReposiory);
 const accountControllers = new AccountControllers(accountServices);
 
-accountRouter.post("/accounts", async (request, response) => {
+accountRouter.post("/accounts/:email", async (request, response) => {
   await accountControllers.handleCreateAccount(request, response);
 });
 
-accountRouter.get("/accounts/:userEmail", async (request, response) => {
+accountRouter.get("/accounts/:email", async (request, response) => {
   await accountControllers.handleGetByUserEmail(request, response);
 });
 

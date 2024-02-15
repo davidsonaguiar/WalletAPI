@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AccountServices } from "./account.services";
 import { defaultMaxListeners } from "events";
+import { number } from "zod";
 
 export class AccountControllers {
 
@@ -10,8 +11,10 @@ export class AccountControllers {
   
   async handleCreateAccount(request: Request, response: Response): Promise<void> {
     try {
-      const { name, email } = request.body;
-      const account = await this.services.CreateAccount({ name, userEmail: email });
+      const email = request.params.email;
+      const name = request.body.name;
+      const amount = request.body.amount ?? 0;
+      const account = await this.services.CreateAccount({ name, email, amount});
       response.status(201).json(account);
     } 
     catch (error) {
@@ -21,8 +24,8 @@ export class AccountControllers {
 
   async handleGetByUserEmail(request: Request, response: Response): Promise<void> {
     try {
-      const { userEmail } = request.params;
-      const accounts = await this.services.GetByUserEmail(userEmail);
+      const email = request.params.email;
+      const accounts = await this.services.GetByUserEmail(email);
       response.status(200).json(accounts);
     } 
     catch (error) {

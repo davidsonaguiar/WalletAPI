@@ -1,9 +1,10 @@
+import { Category } from "../category/category.models";
+
 export interface TransactionEntity {
   id: string;
   amount: number;
-  type: "income" | "expense";
   description: string;
-  category: string;
+  category: Category;
   date: Date;
   idAccount: number;
 }
