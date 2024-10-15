@@ -5,7 +5,6 @@ const metaRepository = prisma.meta;
 
 
 async function updateMeta(data: Meta) {
-  console.log(data)
   return await metaRepository.update({
     where: { id: data.id, user_id: data.user_id },
     data: {

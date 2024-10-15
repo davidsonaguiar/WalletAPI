@@ -1,11 +1,10 @@
 import jwt  from 'jsonwebtoken';
-import { UserOutput } from '../user/user.models';
+import { UserOutput } from '../resources/user/user-models';
 
 export function getUserIdByToken(auth: string) {
   const token = auth && auth.split(" ")[1];
   if (process.env.SECRET) {
     const user = jwt.verify(token, process.env.SECRET);
-    console.log(user);
     if (typeof user === "object" && "id" in user) {
       return user;
     }

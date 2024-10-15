@@ -31,7 +31,6 @@ async function addMeta(request: Request, response: Response) {
       await metaService.saveMeta(body);
       return response.status(201).json("Adicionado com sucesso.");
     } catch(error) {
-      console.log(error);
       return response.status(500).json("Error ao adicionar meta.");
     }
   } else {
@@ -50,7 +49,6 @@ async function editMeta(request: Request, response: Response) {
       await metaService.updateMeta(body);
       return response.status(200).json("Atualizada com sucesso.");
     } catch(error) {
-      console.log(error)
       return response.status(500).json("Error ao atualizar a meta.");
     }
   } else {
