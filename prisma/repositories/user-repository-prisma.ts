@@ -1,6 +1,6 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { UserRepositoryProtocol } from "../../src/resources/user/protocols/user-repository-protocol";
-import { SaveUserInput, SaveUserOutput } from "../../src/resources/user/user-models";
+import { SaveUserInput, SaveUserOutput, User } from "../../src/resources/user/user-models";
 
 export class UserRepositoryPrisma implements UserRepositoryProtocol {
     private readonly prisma: PrismaClient;
@@ -16,16 +16,42 @@ export class UserRepositoryPrisma implements UserRepositoryProtocol {
                 id: true,
                 name: true,
                 email: true,
+                accounts: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
         });
     }
 
     async findById(id: string): Promise<User | null> {
-        return await this.prisma.user.findUnique({ where: { id } });
+        return await this.prisma.user.findUnique({
+            where: { id },
+            include: {
+                accounts: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
     }
 
     async findByEmail(email: string): Promise<User | null> {
-        return await this.prisma.user.findUnique({ where: { email } });
+        return await this.prisma.user.findUnique({
+            where: { email },
+            include: {
+                accounts: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
     }
 
     async emailExists(email: string): Promise<boolean> {

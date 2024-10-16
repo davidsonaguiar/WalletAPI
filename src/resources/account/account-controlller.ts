@@ -20,4 +20,48 @@ export class AccountController {
             next(error);
         }
     }
+
+    async findAccounts(_: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            const accounts = await this.accountService.findAccounts(user.id);
+            res.status(200).json(accounts);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async findAccountById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const accountId = req.params.id;
+            const account = await this.accountService.findAccountById(accountId);
+            res.status(200).json(account);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateAccount(req: Request, res: Response, next: NextFunction) {
+        try {
+            const accountId = req.params.id;
+            const body = req.body;
+            const user = res.locals.user;
+            const account = await this.accountService.updateAccount(user.id, accountId, body);
+            res.status(200).json(account);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async deleteAccount(req: Request, res: Response, next: NextFunction) {
+        try {
+            const accountId = req.params.id;
+            const user = res.locals.user;
+            await this.accountService.deleteAccount(user.id, accountId);
+            res.status(204).send();
+        } catch (error) {
+            next(error);
+        }
+    }
 }

@@ -13,7 +13,7 @@ model User {
   email    String @unique
   password String
 
-  accouts    Account[]
+  accounts    Account[]
   categories Category[]
   metas      Meta[]
 }

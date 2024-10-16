@@ -8,16 +8,6 @@ export class AccountRepositoryPrisma {
         this.prisma = prisma;
     }
 
-    async findByUserId(userId: string): Promise<SaveAccountOutput[]> {
-        return await this.prisma.account.findMany({
-            where: { userId },
-            select: {
-                id: true,
-                name: true,
-            },
-        });
-    }
-
     async save(userId: string, input: SaveAccountInput): Promise<SaveAccountOutput> {
         return await this.prisma.account.create({
             data: {
@@ -28,6 +18,43 @@ export class AccountRepositoryPrisma {
                 id: true,
                 name: true,
             },
+        });
+    }
+
+    async findById(accountId: string): Promise<SaveAccountOutput | null> {
+        return await this.prisma.account.findUnique({
+            where: { id: accountId },
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+    }
+
+    async findByUserId(userId: string): Promise<SaveAccountOutput[]> {
+        return await this.prisma.account.findMany({
+            where: { userId },
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+    }
+
+    async update(accountId: string, input: SaveAccountInput): Promise<SaveAccountOutput> {
+        return await this.prisma.account.update({
+            where: { id: accountId },
+            data: { name: input.name },
+            select: {
+                id: true,
+                name: true,
+            },
+        })
+    }
+
+    async delete(accountId: string): Promise<void> {
+        await this.prisma.account.delete({
+            where: { id: accountId },
         });
     }
 }

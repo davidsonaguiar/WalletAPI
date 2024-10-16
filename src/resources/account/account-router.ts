@@ -15,8 +15,24 @@ const userRepository = new UserRepositoryPrisma(prisma);
 const accountService = new AccountService(accountRepository, userRepository);
 const accountController = new AccountController(accountService);
 
-accountRouter.post(`${URL_BASE}`, authMiddleware, (req, res, next) => {
-    accountController.save(req, res, next);
+accountRouter.post(`${URL_BASE}`, authMiddleware, async (req, res, next) => {
+    await accountController.save(req, res, next);
+});
+
+accountRouter.get(`${URL_BASE}/:id`, authMiddleware, async (req, res, next) => {
+    await accountController.findAccountById(req, res, next);
+});
+
+accountRouter.get(`${URL_BASE}`, authMiddleware, async (req, res, next) => {
+    await accountController.findAccounts(req, res, next);
+});
+
+accountRouter.put(`${URL_BASE}/:id`, authMiddleware, async (req, res, next) => {
+    await accountController.updateAccount(req, res, next);
+});
+
+accountRouter.delete(`${URL_BASE}/:id`, authMiddleware, async (req, res, next) => {
+    await accountController.deleteAccount(req, res, next);
 });
 
 export { accountRouter };
