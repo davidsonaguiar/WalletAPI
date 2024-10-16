@@ -55,7 +55,7 @@ export class UserRepositoryPrisma implements UserRepositoryProtocol {
     }
 
     async emailExists(email: string): Promise<boolean> {
-        const user = await this.prisma.user.findFirst({ where: { email } });
+        const user = await this.prisma.user.findUnique({ where: { email } });
         return !!user;
     }
 }

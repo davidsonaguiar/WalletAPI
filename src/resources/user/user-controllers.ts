@@ -23,6 +23,7 @@ export class UserController {
     async login(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
+            console.log(body);
             const user = await this.userServices.login(body);
             res.status(200).json(user);
         } catch (error) {

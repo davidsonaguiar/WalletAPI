@@ -22,25 +22,33 @@ export class UserService {
         this.jwt = jwt;
     }
 
-    async save(input: SaveUserInput): Promise<SaveUserOutput> {
+    async save(input: SaveUserInput): Promise<LoginOutput> {
         const emailExists = await this.userRepository.emailExists(input.email);
         if (emailExists) throw new ErrorStandard("Email already exists", 409);
         input.password = await this.passwordEncrypter.encrypt(input.password);
-        return await this.userRepository.save(input);
+        const userSaved = await this.userRepository.save(input);
+        return {
+            user: {
+                id: userSaved.id,
+                email: userSaved.email,
+                name: userSaved.name,
+            },
+            token: await this.jwt.sign(userSaved),
+        };
     }
 
     async login(input: LoginInput): Promise<LoginOutput> {
         const user = await this.userRepository.findByEmail(input.email);
-        if(!user) throw new ErrorStandard("Email or Password invalid", 401);
+        if (!user) throw new ErrorStandard("Email or Password invalid", 401);
         const passwordMatch = await compare(input.password, user.password);
-        if(!passwordMatch) throw new ErrorStandard("Email or Password invalid", 401);
+        if (!passwordMatch) throw new ErrorStandard("Email or Password invalid", 401);
         return {
             user: {
+                id: user.id,
                 email: user.email,
                 name: user.name,
-                password: user.password
             },
-            token: await this.jwt.sign(user)
-        }
+            token: await this.jwt.sign(user),
+        };
     }
 }

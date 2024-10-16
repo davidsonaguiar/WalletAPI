@@ -1,4 +1,4 @@
-import { AccountRepositoryProtocol } from "./account-repository-protocol";
+import { AccountRepositoryProtocol } from "./protocols/account-repository-protocol";
 import { UserRepositoryProtocol } from "../user/protocols/user-repository-protocol";
 import { SaveAccountInput, SaveAccountOutput } from "./account-models";
 import { ErrorStandard } from "../../error/error-standard";

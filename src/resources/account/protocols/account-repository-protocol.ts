@@ -1,4 +1,4 @@
-import { SaveAccountInput, SaveAccountOutput } from "./account-models";
+import { SaveAccountInput, SaveAccountOutput } from "../account-models";
 
 export interface AccountRepositoryProtocol {
     save(userId: string, input: SaveAccountInput): Promise<SaveAccountOutput>;
