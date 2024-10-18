@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AccountService } from "./account-services";
-
+import { UpdateAccountInput } from "./account-models";
 
 export class AccountController {
     private readonly accountService: AccountService;
@@ -14,7 +14,10 @@ export class AccountController {
             const user = res.locals.user;
             console.log(user);
             const body = req.body;
-            const account = await this.accountService.save(user.id, body);
+            const account = await this.accountService.save({
+                userId: user.id,
+                name: body.name,
+            });
             res.status(201).json(account);
         } catch (error) {
             next(error);
@@ -46,13 +49,15 @@ export class AccountController {
             const accountId = req.params.id;
             const body = req.body;
             const user = res.locals.user;
-            const account = await this.accountService.updateAccount(user.id, accountId, body);
+            const account = await this.accountService.updateAccount(user.id, {
+                id: accountId,
+                name: body.name,
+            });
             res.status(200).json(account);
         } catch (error) {
             next(error);
         }
     }
-
 
     async deleteAccount(req: Request, res: Response, next: NextFunction) {
         try {

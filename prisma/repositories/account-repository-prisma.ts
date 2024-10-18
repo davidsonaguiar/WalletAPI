@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { SaveAccountInput, SaveAccountOutput } from "../../src/resources/account/account-models";
+import { SaveAccountInput, AccountWithoutUserId, UpdateAccountInput } from "../../src/resources/account/account-models";
 
 export class AccountRepositoryPrisma {
     private readonly prisma: PrismaClient;
@@ -8,11 +8,11 @@ export class AccountRepositoryPrisma {
         this.prisma = prisma;
     }
 
-    async save(userId: string, input: SaveAccountInput): Promise<SaveAccountOutput> {
+    async save(input: SaveAccountInput): Promise<AccountWithoutUserId> {
         return await this.prisma.account.create({
             data: {
                 name: input.name,
-                userId,
+                userId: input.userId
             },
             select: {
                 id: true,
@@ -21,7 +21,7 @@ export class AccountRepositoryPrisma {
         });
     }
 
-    async findById(accountId: string): Promise<SaveAccountOutput | null> {
+    async findById(accountId: string): Promise<AccountWithoutUserId | null> {
         return await this.prisma.account.findUnique({
             where: { id: accountId },
             select: {
@@ -31,7 +31,7 @@ export class AccountRepositoryPrisma {
         });
     }
 
-    async findByUserId(userId: string): Promise<SaveAccountOutput[]> {
+    async findByUserId(userId: string): Promise<AccountWithoutUserId[]> {
         return await this.prisma.account.findMany({
             where: { userId },
             select: {
@@ -41,15 +41,15 @@ export class AccountRepositoryPrisma {
         });
     }
 
-    async update(accountId: string, input: SaveAccountInput): Promise<SaveAccountOutput> {
+    async update(input: UpdateAccountInput): Promise<AccountWithoutUserId> {
         return await this.prisma.account.update({
-            where: { id: accountId },
+            where: { id: input.id },
             data: { name: input.name },
             select: {
                 id: true,
                 name: true,
             },
-        })
+        });
     }
 
     async delete(accountId: string): Promise<void> {

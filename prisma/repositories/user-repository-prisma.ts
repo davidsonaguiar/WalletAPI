@@ -36,6 +36,13 @@ export class UserRepositoryPrisma implements UserRepositoryProtocol {
                         name: true,
                     },
                 },
+                categories: {
+                    select: {
+                        id: true,
+                        name: true,
+                        type: true
+                    }
+                }
             },
         });
     }
@@ -50,6 +57,13 @@ export class UserRepositoryPrisma implements UserRepositoryProtocol {
                         name: true,
                     },
                 },
+                categories: {
+                    select: {
+                        id: true,
+                        name: true,
+                        type: true
+                    }
+                }
             },
         });
     }

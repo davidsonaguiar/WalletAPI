@@ -1,36 +1,19 @@
-import { SaveAccountOutput } from "../account/account-models";
+import { AccountWithoutUserId } from "../account/account-models";
+import { CategoryWithoutUserId } from "../category/category-models";
 
-export interface User {
+export type User = {
     id: string;
     name: string;
     email: string;
     password: string;
-    accounts: SaveAccountOutput[];
-}
+    accounts: AccountWithoutUserId[];
+    categories: CategoryWithoutUserId[];
+};
 
-export interface SaveUserInput {
-    name: string;
-    email: string;
-    password: string;
-}
-
-export interface SaveUserOutput {
-    id: string;
-    name: string;
-    email: string;
-    accounts: SaveAccountOutput[];
-}
-
-export interface LoginInput {
-    email: string;
-    password: string;
-}
-
-export interface LoginOutput {
-    user: {
-        id: string;
-        name: string;
-        email: string;
-    };
+export type SaveUserInput = Omit<User, "id" | "accounts" | "categories">;
+export type SaveUserOutput = Omit<User, "accounts" | "password" | "categories">;
+export type LoginInput = Pick<User, "email" | "password">;
+export type LoginOutput = {
+    user: Omit<User, "accounts" | "password" | "categories">;
     token: string;
-}
+};

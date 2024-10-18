@@ -46,10 +46,10 @@ model Transaction {
 model Category {
   id     Int     @id @default(autoincrement())
   name   String
-  type   Type
-  userId String?
+  type   String
+  userId String
 
-  user User? @relation(fields: [userId], references: [email])
+  user User @relation(fields: [userId], references: [id])
 
   transactions Transaction[]
   meta         Meta[]
@@ -69,9 +69,4 @@ model Meta {
   category Category @relation(fields: [categoryId], references: [id])
 
   @@unique([month, year, userId, categoryId])
-}
-
-enum Type {
-  Ganhos
-  Gastos
 }
