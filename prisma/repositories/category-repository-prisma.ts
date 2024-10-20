@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Category as CategoryPrisma } from "@prisma/client";
 import { CategoryRepositoryProtocol } from "../../src/resources/category/protocols/category-repository-protocol";
-import { SaveCategoryInput, CategoryWithoutUserId } from "../../src/resources/category/category-models";
+import { SaveCategoryInput, CategoryWithoutUserId, Category } from "../../src/resources/category/category-models";
 import { CategoryType } from "../../src/resources/category/enums/category-type";
 
 export class CategoryRepositoryPrisma implements CategoryRepositoryProtocol{
@@ -30,6 +30,16 @@ export class CategoryRepositoryPrisma implements CategoryRepositoryProtocol{
                 id: true,
                 name: true,
                 type: true
+            }
+        })
+    }
+
+    async update(category: Category): Promise<any> {
+        return this.prisma.category.update({
+            where: { id: category.id },
+            data: {
+                name: category.name,
+                type: CategoryType[category.type]
             }
         })
     }

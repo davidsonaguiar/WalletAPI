@@ -17,6 +17,7 @@ export class AccountController {
             const account = await this.accountService.save({
                 userId: user.id,
                 name: body.name,
+                balance: 0,
             });
             res.status(201).json(account);
         } catch (error) {
@@ -52,6 +53,7 @@ export class AccountController {
             const account = await this.accountService.updateAccount(user.id, {
                 id: accountId,
                 name: body.name,
+                balance: body.balance,
             });
             res.status(200).json(account);
         } catch (error) {

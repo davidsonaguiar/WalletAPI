@@ -1,6 +1,6 @@
 import { ErrorStandard } from "../../error/error-standard";
 import { UserRepositoryProtocol } from "../user/protocols/user-repository-protocol";
-import { SaveCategoryInput, CategoryWithoutUserId } from "./category-models";
+import { SaveCategoryInput, CategoryWithoutUserId, Category } from "./category-models";
 import { CategoryRepositoryProtocol } from "./protocols/category-repository-protocol";
 
 export class CategoryService {
@@ -21,5 +21,13 @@ export class CategoryService {
 
     async findAll(userId: string): Promise<CategoryWithoutUserId[]> {
         return await this.categoryRepository.findAllByUserId(userId);
+    }
+
+    async update(category: Category): Promise<CategoryWithoutUserId> {
+        const user = await this.userRepository.findById(category.userId);
+        if (!user) throw new ErrorStandard("No authorization!", 401);
+        const categoryExists = user.categories.find((c) => c.id === category.id);
+        if (!categoryExists) throw new ErrorStandard("Category not found", 404);
+        return await this.categoryRepository.update(category);
     }
 }

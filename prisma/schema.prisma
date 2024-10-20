@@ -13,15 +13,16 @@ model User {
   email    String @unique
   password String
 
-  accounts    Account[]
+  accounts   Account[]
   categories Category[]
   metas      Meta[]
 }
 
 model Account {
-  id     String @id @default(uuid())
-  name   String
-  userId String
+  id      String @id @default(uuid())
+  name    String
+  balance Float
+  userId  String
 
   user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
@@ -44,7 +45,7 @@ model Transaction {
 }
 
 model Category {
-  id     Int     @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   name   String
   type   String
   userId String

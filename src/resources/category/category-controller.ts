@@ -29,4 +29,21 @@ export class CategoryController {
             next(error);
         }
     }
+
+    async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            const body = req.body;
+            const categoryId = req.params.id;
+            const categoryUpdated = await this.categoryService.update({
+                id: Number(categoryId),
+                name: body.name,
+                type: body.type,
+                userId: user.id
+            });
+            res.status(200).json(categoryUpdated);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

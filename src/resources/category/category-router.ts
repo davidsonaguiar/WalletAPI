@@ -22,4 +22,8 @@ categoryRouter.get(BASE_URL, authMiddleware, async (req, resp, next) => {
     await categoryController.getAll(req, resp, next);
 });
 
+categoryRouter.put(`${BASE_URL}/:id`, authMiddleware, async (req, resp, next) => {
+    await categoryController.update(req, resp, next);
+});
+
 export { categoryRouter };

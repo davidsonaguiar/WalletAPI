@@ -12,11 +12,13 @@ export class AccountRepositoryPrisma {
         return await this.prisma.account.create({
             data: {
                 name: input.name,
-                userId: input.userId
+                userId: input.userId,
+                balance: input.balance
             },
             select: {
                 id: true,
                 name: true,
+                balance: true, 
             },
         });
     }
@@ -27,6 +29,7 @@ export class AccountRepositoryPrisma {
             select: {
                 id: true,
                 name: true,
+                balance: true,
             },
         });
     }
@@ -37,6 +40,7 @@ export class AccountRepositoryPrisma {
             select: {
                 id: true,
                 name: true,
+                balance: true,
             },
         });
     }
@@ -48,6 +52,7 @@ export class AccountRepositoryPrisma {
             select: {
                 id: true,
                 name: true,
+                balance: true,
             },
         });
     }
